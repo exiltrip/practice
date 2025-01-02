@@ -1,4 +1,4 @@
-module awesomeProject3
+module practice
 
 go 1.22
 
