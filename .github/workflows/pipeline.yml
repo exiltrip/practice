@@ -1,0 +1,43 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.22' # Укажите вашу версию Go
+
+      - name: Install dependencies
+        run: |
+          go mod tidy
+          go mod vendor
+
+      - name: Run tests
+        run: |
+          go test -v ./...
+
+      - name: Build application
+        run: |
+          GOARCH=amd64 GOOS=linux go build -o app
+
+      - name: Deploy to server
+        run: |
+          echo "здесь стоит заглушка, поскольку сервер локальный."
+#           rsync -avz -e "ssh -i /path/to/your/private-key" ./app root@your-server-ip:/path/to/destination/
+#          env:
+#           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
